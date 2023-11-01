@@ -1,27 +1,20 @@
 import React, { Component, useState } from 'react'
 import './Quiz.css'
 import QuizQuestion from '../core/QuizQuestion';
+import QuizCore from '../core/QuizCore';
 
 interface QuizState {
-  questions: QuizQuestion[]
-  currentQuestionIndex: number
+  // questions: QuizQuestion[]
+  // currentQuestionIndex: number
   selectedAnswer: string | null
-  score: number
+  // score: number
 }
 
 const Quiz: React.FC = () => {
-  const initialQuestions: QuizQuestion[] = [
-    {
-      question: 'What is the capital of France?',
-      options: ['London', 'Berlin', 'Paris', 'Madrid'],
-      correctAnswer: 'Paris',
-    },
-  ];
+  const quizCore: QuizCore = new QuizCore();
+
   const [state, setState] = useState<QuizState>({
-    questions: initialQuestions,
-    currentQuestionIndex: 0,  // Initialize the current question index.
     selectedAnswer: null,  // Initialize the selected answer.
-    score: 0,  // Initialize the score.
   });
 
   const handleOptionSelect = (option: string): void => {
@@ -31,16 +24,16 @@ const Quiz: React.FC = () => {
 
   const handleButtonClick = (): void => {
     // Task3: Implement the logic for button click, such as moving to the next question.
-  } 
+  }
 
-  const { questions, currentQuestionIndex, selectedAnswer, score } = state;
-  const currentQuestion = questions[currentQuestionIndex];
+  const { selectedAnswer } = state;
+  const currentQuestion = quizCore.getCurrentQuestion();
 
   if (!currentQuestion) {
     return (
       <div>
         <h2>Quiz Completed</h2>
-        <p>Final Score: {score} out of {questions.length}</p>
+        <p>Final Score: {quizCore.getScore()} out of</p>
       </div>
     );
   }
@@ -49,7 +42,7 @@ const Quiz: React.FC = () => {
     <div>
       <h2>Quiz Question:</h2>
       <p>{currentQuestion.question}</p>
-    
+
       <h3>Answer Options:</h3>
       <ul>
         {currentQuestion.options.map((option) => (
